@@ -32,9 +32,9 @@ const DetailsCard = ({ title, details }) => {
 const GridItemsChart = () => {
   return (
     <div className="w-full h-full flex flex-col-reverse lg:flex-row p-4 border rounded gap-8">
-      <div className="w-full Ig:w-3/4 h-full p-2 border rounded-">
+      {/* <div className="w-full Ig:w-3/4 h-full p-2 border rounded-">
         <div className="w-full h-full flex items-center justify-center">
-          <ResponsiveContainer width={"100%"} height={"100%"}>
+          <ResponsiveContainer width={"100%"} height={"100%"} aspect={2}>
             <AreaChart data={data}>
               <Area
                 type="monotone"
@@ -56,10 +56,11 @@ const GridItemsChart = () => {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-      </div>
-      <div className="w-full lg:w-1/4 h-full flex flex-col items-center justify-start gap-8">
+      </div> */}
+      <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:max-w-[80rem]">
         <DetailsCard title="Total Revenue 2024" details={"$4.124.732"} />
         <DetailsCard title="Revenue Increase From 2023" details={"5.5%"} />
+        <DetailsCard title="Projected Revenue 2025" details={"$4.241.657"} />
         <DetailsCard title="Projected Revenue 2025" details={"$4.241.657"} />
       </div>
     </div>

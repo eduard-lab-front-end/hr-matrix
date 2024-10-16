@@ -1,22 +1,44 @@
-import { Separator } from "@/components/ui/separator";
-import AppHeader from "./AppHeader/AppHeader";
-import AppSidebar from "./AppSidebar/AppSidebar";
+import { Route, Routes } from "react-router-dom";
+import { useContext } from "react";
+import { SessionContext } from "@/contexts/SessionContext";
 
-const AppLayout = ({ children }) => {
+import AppHeader from "./AppHeader/AppHeader";
+import AppSidebarNav from "./AppSidebar/AppSidebarNav";
+import LoginPage from "../../pages/LoginPage";
+import SignUpPage from "../../pages/SignupPage";
+import DashboardPage from "../../pages/DashboardPage";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import EmployeesPage from "@/pages/EmployeesPage";
+
+const AppLayout = () => {
+  const { isAuthenticated } = useContext(SessionContext);
+
   return (
-    <div className="w-full h-screen flex flex-row">
-      <AppSidebar />
-      <Separator orientation="vertical" />
-      <div className="w-full h-screen flex flex-col">
-        <header className="h-16 w-full">
-          <AppHeader />
-        </header>
-        <Separator />
-        <main className="w-full h-full p-4">
-          {children}
-        </main>
-      </div>
-    </div>
+    <>
+      {!isAuthenticated ? (
+        <LoginPage />
+      ) : (
+        <div className="flex min-h-screen w-full flex-col bg-muted/40">
+          <AppSidebarNav />
+          <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+            <AppHeader />
+            <Routes>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route
+                path="/employees"
+                element={
+                  <PrivateRoute>
+                    <EmployeesPage />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

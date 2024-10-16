@@ -23,7 +23,7 @@ router.post("/signup", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
-    const potentialUser = await User.findOne({ username: req.body.username });
+    const potentialUser = await User.findOne({ email: req.body.email });
     if (potentialUser) {
       if (bcrypt.compareSync(req.body.password, potentialUser.passwordHash)) {
         const authToken = jwt.sign(
@@ -39,7 +39,7 @@ router.post("/login", async (req, res, next) => {
         res.status(401).json({ message: "Incorrect password" });
       }
     } else {
-      res.status(404).json({ message: "No user with this username" });
+      res.status(404).json({ message: "No user with this email" });
     }
   } catch (error) {
     next(error);
