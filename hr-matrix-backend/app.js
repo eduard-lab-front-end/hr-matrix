@@ -6,6 +6,10 @@ const app = express();
 
 require("./config")(app);
 
+app.get("/", (req, res) => {
+  res.json("All good");
+});
+
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
