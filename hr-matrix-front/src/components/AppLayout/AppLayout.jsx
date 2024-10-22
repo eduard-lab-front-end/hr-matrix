@@ -9,6 +9,9 @@ import SignUpPage from "../../pages/SignupPage";
 import DashboardPage from "../../pages/DashboardPage";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import EmployeesPage from "@/pages/EmployeesPage";
+import { Vacancies } from "../Vacancies/Vacancies";
+import VacancyDetailsPage from "@/pages/VacancyDetailsPage";
+
 
 const AppLayout = () => {
   const { isAuthenticated } = useContext(SessionContext);
@@ -26,11 +29,20 @@ const AppLayout = () => {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/vacancies/:vacancyId" element={<VacancyDetailsPage />} />
               <Route
                 path="/employees"
                 element={
                   <PrivateRoute>
                     <EmployeesPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/vacancies"
+                element={
+                  <PrivateRoute>
+                    <Vacancies />
                   </PrivateRoute>
                 }
               />

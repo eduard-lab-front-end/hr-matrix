@@ -7,6 +7,7 @@ const SessionContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [needRefresh, setNeedRefresh] = useState(true);
   const [employees, setEmployees] = useState([]);
+  const [vacancies, setVacancies] = useState([]);
   const [isVerifying, setIsVerifying] = useState(true);
 
   useEffect(() => {
@@ -43,6 +44,8 @@ const SessionContextProvider = ({ children }) => {
 
   useEffect(() => {
     const localToken = localStorage.getItem("authToken");
+    fetchEmployees();
+    fetchVacancies();
     if (localToken) {
       verifyToken(localToken);
     } else {
@@ -55,31 +58,40 @@ const SessionContextProvider = ({ children }) => {
     localStorage.removeItem("authToken");
   };
 
-
-  const fetchEmployeesWithToken = async (endpoint, method = "GET", payload) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}${endpoint}`,
-        {
-          method,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(payload),
+  const fetchWithToken = async (endpoint, method = "GET", payload) => {
+    if (token) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}${endpoint}`,
+          {
+            method,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+        if (response.ok && response.status !== 204) {
+          return response.json();
         }
-      );
-      if (response.ok && response.status !== 204) {
-        return response.json();
+      } catch (error) {
+        console.error(`Error getting employees`, error);
       }
-    } catch (error) {
-      console.error(`Error getting employees`, error);
     }
   };
   const fetchEmployees = async () => {
     try {
-      const data = await fetchEmployeesWithToken('/employees')
-      setEmployees(data)
+      const data = await fetchWithToken("/employees");
+      setEmployees(data);
+    } catch (error) {
+      console.error("Error getting employees", error);
+    }
+  };
+  const fetchVacancies = async () => {
+    try {
+      const data = await fetchWithToken("/vacancies");
+      setVacancies(data);
     } catch (error) {
       console.error("Error getting employees", error);
     }
@@ -87,6 +99,7 @@ const SessionContextProvider = ({ children }) => {
   useEffect(() => {
     if (needRefresh && !isVerifying) {
       fetchEmployees();
+      fetchVacancies();
       setNeedRefresh(false);
     }
   }, [needRefresh, isVerifying]);
@@ -96,11 +109,12 @@ const SessionContextProvider = ({ children }) => {
       value={{
         setToken,
         isAuthenticated,
-        fetchEmployeesWithToken,
+        fetchWithToken,
         logout,
         needRefresh,
         setNeedRefresh,
         employees,
+        vacancies,
       }}
     >
       {children}

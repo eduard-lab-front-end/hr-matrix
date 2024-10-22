@@ -28,8 +28,7 @@ export function SheetForm({
   },
   isUpdate = false,
 }) {
-  const { setNeedRefresh, fetchEmployeesWithToken } =
-    useContext(SessionContext);
+  const { setNeedRefresh, fetchWithToken } = useContext(SessionContext);
   const [employeeValues, setEmployeeValues] = useState({ ...employee });
 
   const handleChange = (event) => {
@@ -45,7 +44,7 @@ export function SheetForm({
     event.preventDefault();
     try {
       if (!isUpdate) {
-        await fetchEmployeesWithToken("/employees", "POST", employeeValues);
+        await fetchWithToken("/employees", "POST", employeeValues);
         setEmployeeValues({
           firstName: "",
           lastName: "",
@@ -57,7 +56,7 @@ export function SheetForm({
           salary: "",
         });
       } else {
-        await fetchEmployeesWithToken(
+        await fetchWithToken(
           `/employees/${employee._id}`,
           "PUT",
           employeeValues

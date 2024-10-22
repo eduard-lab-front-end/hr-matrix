@@ -5,11 +5,13 @@ import {
   Home,
   Image,
   LineChart,
+  Moon,
   Package,
   Package2,
   PanelLeft,
   Search,
   ShoppingCart,
+  Sun,
   Users2,
 } from "lucide-react";
 import {
@@ -28,12 +30,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { SessionContext } from "@/contexts/SessionContext";
 import { useContext } from "react";
+import { useTheme } from "@/components/ThemeProvider/ThemeProvider";
 
 const AppHeader = () => {
   const { logout } = useContext(SessionContext);
+  const { setTheme, theme } = useTheme();
   return (
     <header className="sticky w-full top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -45,48 +49,48 @@ const AppHeader = () => {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
+            <NavLink
+              to="#"
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">Acme Inc</span>
-            </Link>
-            <Link
-              href="#"
+            </NavLink>
+            <NavLink
+              to="/"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Home className="h-5 w-5" />
               Dashboard
-            </Link>
-            <Link
-              href="#"
+            </NavLink>
+            <NavLink
+              to="/employees"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <ShoppingCart className="h-5 w-5" />
-              Orders
-            </Link>
-            <Link
-              href="#"
+              Employees
+            </NavLink>
+            <NavLink
+              to="#"
               className="flex items-center gap-4 px-2.5 text-foreground"
             >
               <Package className="h-5 w-5" />
               Products
-            </Link>
-            <Link
-              href="#"
+            </NavLink>
+            <NavLink
+              to="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Users2 className="h-5 w-5" />
               Customers
-            </Link>
-            <Link
-              href="#"
+            </NavLink>
+            <NavLink
+              to="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <LineChart className="h-5 w-5" />
               Settings
-            </Link>
+            </NavLink>
           </nav>
         </SheetContent>
       </Sheet>
@@ -117,6 +121,15 @@ const AppHeader = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      >
+        <Sun className="h-[1.5rem] w-[1.3rem] dark:hidden" />
+        <Moon className="hidden h-5 w-5 dark:block" />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

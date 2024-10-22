@@ -39,12 +39,12 @@ import { useContext } from "react";
 import { SessionContext } from "@/contexts/SessionContext";
 
 const Employees = () => {
-  const { employees, fetchEmployeesWithToken, setNeedRefresh } =
+  const { employees, fetchWithToken, setNeedRefresh } =
     useContext(SessionContext);
-
+  console.log(employees)
   const deleteEmployeeHandle = async (employeeId) => {
     try {
-      await fetchEmployeesWithToken(`/employees/${employeeId}`, "DELETE");
+      await fetchWithToken(`/employees/${employeeId}`, "DELETE");
       setNeedRefresh(true);
     } catch (error) {
       console.log("Can't remove an employee", error);
@@ -103,28 +103,28 @@ const Employees = () => {
         <TabsContent value="all">
           <Card x-chunk="A list of products in a table with actions. Each row has an image, name, status, price, total sales, created at and actions.">
             <CardHeader>
-              <CardTitle>Products</CardTitle>
+              <CardTitle>Employees</CardTitle>
               <CardDescription>
-                Manage your employees and view their performance.
+                Manage your employees.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="hidden w-[100px] sm:table-cell">
+                    <TableHead className="hidden sm:table-cell"> 
                       <span className="sr-only">Image</span>
                     </TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Price
+                      Salary
                     </TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Total Sales
+                      Type
                     </TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Created at
+                      Employee ID
                     </TableHead>
                     <TableHead>
                       <span className="sr-only">Actions</span>
@@ -136,25 +136,26 @@ const Employees = () => {
                     <TableRow key={currentEmployee._id}>
                       <TableCell className="hidden sm:table-cell">
                         <Image
-                          alt="Product image"
+                          alt="Employee image"
                           className="aspect-square rounded-md object-cover"
-                          height="64"
+                          height="46"
                           src="/placeholder.svg"
-                          width="64"
+                          width="36"
                         />
                       </TableCell>
                       <TableCell className="font-medium">
-                        {currentEmployee.firstName} {currentEmployee.lastName}
+                        <p>{currentEmployee.firstName} {currentEmployee.lastName}</p>
+                        <p className="text-muted-foreground">{currentEmployee.email}</p>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">Draft</Badge>
+                        <Badge variant="outline">{currentEmployee.status}</Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
-                        $499.99
+                        ${currentEmployee.salary}
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">25</TableCell>
+                      <TableCell className="hidden md:table-cell">{currentEmployee.employmentType}</TableCell>
                       <TableCell className="hidden md:table-cell">
-                        2023-07-12 10:42 AM
+                        #{currentEmployee._id}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
