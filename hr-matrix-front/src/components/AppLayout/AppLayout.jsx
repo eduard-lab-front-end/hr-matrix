@@ -15,6 +15,7 @@ import VacancyDetailsPage from "@/pages/VacancyDetailsPage";
 const AppLayout = () => {
   const { isAuthenticated } = useContext(SessionContext);
   const location = useLocation();
+
   return (
     <>
       {!isAuthenticated && location.pathname == "/login" ? (

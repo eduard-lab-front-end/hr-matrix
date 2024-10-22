@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SessionContext = createContext();
 
@@ -9,11 +10,13 @@ const SessionContextProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [vacancies, setVacancies] = useState([]);
   const [isVerifying, setIsVerifying] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (token) {
       setIsAuthenticated(true);
       localStorage.setItem("authToken", token);
+      fetchEmployees();
+      fetchVacancies();
     } else {
       setIsAuthenticated(false);
     }
@@ -56,6 +59,7 @@ const SessionContextProvider = ({ children }) => {
   const logout = () => {
     setToken();
     localStorage.removeItem("authToken");
+    navigate("/login");
   };
 
   const fetchWithToken = async (endpoint, method = "GET", payload) => {

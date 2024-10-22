@@ -11,7 +11,6 @@ export function AuthForm() {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const handleSubmit = async (event) => {
     const newUser = {
       username,
