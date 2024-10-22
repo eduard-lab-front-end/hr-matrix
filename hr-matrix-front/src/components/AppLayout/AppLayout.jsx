@@ -28,7 +28,14 @@ const AppLayout = () => {
           <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
             <AppHeader />
             <Routes>
-              <Route path="/" element={<DashboardPage />} />
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <DashboardPage />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route
