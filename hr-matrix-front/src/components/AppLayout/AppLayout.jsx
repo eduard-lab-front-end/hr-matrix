@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { SessionContext } from "@/contexts/SessionContext";
 
@@ -12,14 +12,15 @@ import EmployeesPage from "@/pages/EmployeesPage";
 import { Vacancies } from "../Vacancies/Vacancies";
 import VacancyDetailsPage from "@/pages/VacancyDetailsPage";
 
-
 const AppLayout = () => {
   const { isAuthenticated } = useContext(SessionContext);
-
+  const location = useLocation();
   return (
     <>
-      {!isAuthenticated ? (
+      {!isAuthenticated && location.pathname == "/login" ? (
         <LoginPage />
+      ) : !isAuthenticated && location.pathname == "/signup" ? (
+        <SignUpPage />
       ) : (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
           <AppSidebarNav />
@@ -29,7 +30,10 @@ const AppLayout = () => {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/vacancies/:vacancyId" element={<VacancyDetailsPage />} />
+              <Route
+                path="/vacancies/:vacancyId"
+                element={<VacancyDetailsPage />}
+              />
               <Route
                 path="/employees"
                 element={
