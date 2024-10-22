@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const SessionContext = createContext();
 
@@ -9,18 +8,7 @@ const SessionContextProvider = ({ children }) => {
   const [needRefresh, setNeedRefresh] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [vacancies, setVacancies] = useState([]);
-  const [isVerifying, setIsVerifying] = useState(true);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (token) {
-      setIsAuthenticated(true);
-      localStorage.setItem("authToken", token);
-      fetchEmployees();
-      fetchVacancies();
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [token]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const verifyToken = async (currentToken) => {
     try {
@@ -34,32 +22,41 @@ const SessionContextProvider = ({ children }) => {
       );
       if (response.status === 200) {
         setToken(currentToken);
+        setIsAuthenticated(true);
       } else {
         localStorage.removeItem("authToken");
       }
-      setIsVerifying(false);
     } catch (error) {
       console.log(error);
       localStorage.removeItem("authToken");
-      setIsVerifying(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const localToken = localStorage.getItem("authToken");
-    fetchEmployees();
-    fetchVacancies();
     if (localToken) {
       verifyToken(localToken);
+      fetchEmployees();
+      fetchVacancies();
     } else {
-      setIsVerifying(false);
+      setIsLoading(false);
     }
   }, []);
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("authToken", token);
+      setIsAuthenticated(true);
+      fetchEmployees();
+      fetchVacancies();
+    }
+  }, [token]);
 
   const logout = () => {
-    setToken();
     localStorage.removeItem("authToken");
-    navigate("/login");
+    setToken();
+    setIsAuthenticated(false);
   };
 
   const fetchWithToken = async (endpoint, method = "GET", payload) => {
@@ -101,12 +98,12 @@ const SessionContextProvider = ({ children }) => {
     }
   };
   useEffect(() => {
-    if (needRefresh && !isVerifying) {
+    if (needRefresh && !isLoading) {
       fetchEmployees();
       fetchVacancies();
       setNeedRefresh(false);
     }
-  }, [needRefresh, isVerifying]);
+  }, [needRefresh, isLoading]);
 
   return (
     <SessionContext.Provider
@@ -119,6 +116,8 @@ const SessionContextProvider = ({ children }) => {
         setNeedRefresh,
         employees,
         vacancies,
+        isLoading,
+        verifyToken,
       }}
     >
       {children}

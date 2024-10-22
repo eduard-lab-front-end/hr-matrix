@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const navigate = useNavigate();
-  const { setToken } = useContext(SessionContext);
+  const { setToken, verifyToken } = useContext(SessionContext);
 
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,6 +35,7 @@ export function LoginForm() {
       if (response.status === 200) {
         const { token } = await response.json();
         setToken(token);
+        await verifyToken(token);
         navigate("/");
       }
     } catch (error) {
