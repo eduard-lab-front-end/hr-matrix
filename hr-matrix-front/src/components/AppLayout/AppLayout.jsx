@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useContext } from "react";
 import { SessionContext } from "@/contexts/SessionContext";
 
@@ -12,18 +12,17 @@ import EmployeesPage from "@/pages/EmployeesPage";
 import { Vacancies } from "../Vacancies/Vacancies";
 import VacancyDetailsPage from "@/pages/VacancyDetailsPage";
 
+import Spinner from "../ui/spinner";
+import EmployeesDetailsPage from "@/pages/EmployeesDetailsPage";
+import Profile from "../Profile/Profile";
+
 const AppLayout = () => {
-  const { isAuthenticated, isLoading } = useContext(SessionContext);
-  const location = useLocation();
+  const { user } = useContext(SessionContext)
+
   return (
     <>
-      {/* {!isAuthenticated && !isVerifying && location.pathname == "/login" ? (
-        <LoginPage />
-      ) : !isAuthenticated && !isVerifying && location.pathname == "/signup" ? (
-        <SignUpPage />
-      ) : ( */}
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
-        <AppSidebarNav />
+        {user ? <AppSidebarNav userId={user._id}/> : <Spinner />}
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <AppHeader />
           <Routes>
@@ -38,8 +37,20 @@ const AppLayout = () => {
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
+              path="/vacancies"
+              element={
+                <PrivateRoute>
+                  <Vacancies />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path="/vacancies/:vacancyId"
-              element={<VacancyDetailsPage />}
+              element={
+                <PrivateRoute>
+                  <VacancyDetailsPage />
+                </PrivateRoute>
+              }
             />
             <Route
               path="/employees"
@@ -50,13 +61,22 @@ const AppLayout = () => {
               }
             />
             <Route
-              path="/vacancies"
+              path="/employees/:employeeId"
               element={
                 <PrivateRoute>
-                  <Vacancies />
+                  <EmployeesDetailsPage />
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/profile/:profileId"
+              element={
+                <PrivateRoute>
+                  <Profile user={user}/>
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<h1>Error</h1>} />
           </Routes>
         </div>
       </div>

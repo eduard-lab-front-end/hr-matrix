@@ -14,7 +14,10 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.get("/:vacancyId", isAuthenticated, async (req, res, next) => {
   const { vacancyId } = req.params;
   try {
-    const currentVacancy = await Vacancy.findById(vacancyId);
+    const currentVacancy = await Vacancy.findById(vacancyId).populate('applicants');
+    if (!currentVacancy) {
+      return res.status(404).json({ message: 'Vacancy not found' });
+    }
     res.json(currentVacancy);
   } catch (error) {
     next(error);

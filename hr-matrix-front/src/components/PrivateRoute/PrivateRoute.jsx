@@ -1,13 +1,13 @@
 import { SessionContext } from "@/contexts/SessionContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import Spinner from "../ui/spinner";
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useContext(SessionContext);
-  console.log(isAuthenticated, isLoading);
+
   if (isLoading) {
-    console.log("loading...");
-    return <h1>Loading...</h1>;
+    return <Spinner />
   }
   if (!isAuthenticated && !isLoading) {
     console.log("Redirecting");

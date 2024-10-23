@@ -55,14 +55,15 @@ export function SheetForm({
           img: "",
           salary: "",
         });
+        setNeedRefresh(true);
       } else {
         await fetchWithToken(
           `/employees/${employee._id}`,
           "PUT",
           employeeValues
         );
+        setNeedRefresh(true);
       }
-      setNeedRefresh(true);
     } catch (err) {
       console.log("Failed to add an employee", err);
     }

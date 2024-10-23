@@ -14,11 +14,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../ui/tooltip";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-const AppSidebarNav = () => {
+
+const AppSidebarNav = ({userId}) => {
+  const location = useLocation();
+
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <aside className={`${
+        location.pathname == "/login" || location.pathname == "/signup" ? "sm:hidden" : "sm:flex"
+      } fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex`}>
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <NavLink
           to="/"
@@ -73,14 +78,14 @@ const AppSidebarNav = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
-                to="#"
+                to={`/profile/${userId}`}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Users2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
+                <span className="sr-only">Profile</span>
               </NavLink>
             </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
+            <TooltipContent side="right">Profile</TooltipContent>
           </Tooltip>
         </TooltipProvider>
         <TooltipProvider>

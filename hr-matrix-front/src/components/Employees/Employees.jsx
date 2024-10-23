@@ -37,11 +37,12 @@ import {
 import { SheetForm } from "../SheetForm/SheetForm";
 import { useContext } from "react";
 import { SessionContext } from "@/contexts/SessionContext";
+import { useNavigate } from "react-router-dom";
 
 const Employees = () => {
   const { employees, fetchWithToken, setNeedRefresh } =
     useContext(SessionContext);
-  console.log(employees)
+  const navigate = useNavigate();
   const deleteEmployeeHandle = async (employeeId) => {
     try {
       await fetchWithToken(`/employees/${employeeId}`, "DELETE");
@@ -104,15 +105,13 @@ const Employees = () => {
           <Card x-chunk="A list of products in a table with actions. Each row has an image, name, status, price, total sales, created at and actions.">
             <CardHeader>
               <CardTitle>Employees</CardTitle>
-              <CardDescription>
-                Manage your employees.
-              </CardDescription>
+              <CardDescription>Manage your employees.</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="hidden sm:table-cell"> 
+                    <TableHead className="hidden sm:table-cell">
                       <span className="sr-only">Image</span>
                     </TableHead>
                     <TableHead>Name</TableHead>
@@ -120,10 +119,8 @@ const Employees = () => {
                     <TableHead className="hidden md:table-cell">
                       Salary
                     </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Type
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
+                    <TableHead className="hidden md:table-cell">Type</TableHead>
+                    <TableHead className="hidden lg:table-cell">
                       Employee ID
                     </TableHead>
                     <TableHead>
@@ -135,26 +132,34 @@ const Employees = () => {
                   {employees?.map((currentEmployee) => (
                     <TableRow key={currentEmployee._id}>
                       <TableCell className="hidden sm:table-cell">
-                        <Image
+                        <img
                           alt="Employee image"
-                          className="aspect-square rounded-md object-cover"
+                          className="aspect-square rounded-2xl object-cover"
                           height="46"
-                          src="/placeholder.svg"
-                          width="36"
+                          src="https://github.com/shadcn.png"
+                          width="40"
                         />
                       </TableCell>
                       <TableCell className="font-medium">
-                        <p>{currentEmployee.firstName} {currentEmployee.lastName}</p>
-                        <p className="text-muted-foreground">{currentEmployee.email}</p>
+                        <p>
+                          {currentEmployee.firstName} {currentEmployee.lastName}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {currentEmployee.email}
+                        </p>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">{currentEmployee.status}</Badge>
+                        <Badge variant="outline">
+                          {currentEmployee.status}
+                        </Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
                         ${currentEmployee.salary}
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">{currentEmployee.employmentType}</TableCell>
                       <TableCell className="hidden md:table-cell">
+                        {currentEmployee.employmentType}
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         #{currentEmployee._id}
                       </TableCell>
                       <TableCell>
@@ -189,6 +194,11 @@ const Employees = () => {
                               }
                             >
                               Delete
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => navigate(`${currentEmployee._id}`)}
+                            >
+                              Info
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

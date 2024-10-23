@@ -9,7 +9,8 @@ const SessionContextProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [vacancies, setVacancies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [user, setUser] = useState();
+  
   const verifyToken = async (currentToken) => {
     try {
       const response = await fetch(
@@ -21,6 +22,8 @@ const SessionContextProvider = ({ children }) => {
         }
       );
       if (response.status === 200) {
+        const data = await response.json();
+        setUser(data)
         setToken(currentToken);
         setIsAuthenticated(true);
       } else {
@@ -116,6 +119,7 @@ const SessionContextProvider = ({ children }) => {
         setNeedRefresh,
         employees,
         vacancies,
+        user,
         isLoading,
         verifyToken,
       }}

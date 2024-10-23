@@ -30,7 +30,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { SessionContext } from "@/contexts/SessionContext";
 import { useContext } from "react";
 import { useTheme } from "@/components/ThemeProvider/ThemeProvider";
@@ -38,8 +38,13 @@ import { useTheme } from "@/components/ThemeProvider/ThemeProvider";
 const AppHeader = () => {
   const { logout } = useContext(SessionContext);
   const { setTheme, theme } = useTheme();
+  const location = useLocation();
   return (
-    <header className="sticky w-full top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header
+      className={`${
+        location.pathname == "/login" || location.pathname == "/signup" ? "hidden" : "sticky"
+      } w-full top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6`}
+    >
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">

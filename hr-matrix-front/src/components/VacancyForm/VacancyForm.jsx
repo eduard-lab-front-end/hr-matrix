@@ -26,6 +26,8 @@ export function VacancyForm({
     positionTitle: "",
     applicants: "",
     location: "",
+    status: "Open",
+    publication: today.toLocaleDateString(),
   });
   const [open, setOpen] = useState(false);
 
@@ -39,6 +41,7 @@ export function VacancyForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(vacancyValues)
     try {
       if (!isUpdate) {
         await fetchWithToken("/vacancies", "POST", vacancyValues);
