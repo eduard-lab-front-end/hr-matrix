@@ -43,6 +43,15 @@ const Employees = () => {
   const { employees, fetchWithToken, setNeedRefresh } =
     useContext(SessionContext);
   const navigate = useNavigate();
+
+  const avatars = [
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+  ]
+  const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
   const deleteEmployeeHandle = async (employeeId) => {
     try {
       await fetchWithToken(`/employees/${employeeId}`, "DELETE");
@@ -136,7 +145,7 @@ const Employees = () => {
                           alt="Employee image"
                           className="aspect-square rounded-2xl object-cover"
                           height="46"
-                          src="https://github.com/shadcn.png"
+                          src={getRandomElement(avatars)}
                           width="40"
                         />
                       </TableCell>

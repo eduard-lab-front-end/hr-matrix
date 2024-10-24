@@ -14,7 +14,13 @@ import { Archive, Mail, Phone } from "lucide-react";
 import uuid from "react-uuid";
 
 const ApplicantDetails = ({ trigger, applicantData }) => {
-
+  const avatars = [
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+  ]
+  const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
@@ -32,7 +38,7 @@ const ApplicantDetails = ({ trigger, applicantData }) => {
               <Avatar className="h-24 w-24">
                 <AvatarImage
                   className="rounded-full"
-                  src="https://github.com/shadcn.png"
+                  src={getRandomElement(avatars)}
                   alt="Applicant Image"
                 />
                 <AvatarFallback>CN</AvatarFallback>

@@ -107,6 +107,7 @@ const VacancyDetailsPage = () => {
                       <VacancyForm
                         isUpdate={true}
                         vacancy={vacancy}
+                        reloadHandler={fetchVacancyHandle}
                         dialogTrigger={
                           <Button
                             size="sm"

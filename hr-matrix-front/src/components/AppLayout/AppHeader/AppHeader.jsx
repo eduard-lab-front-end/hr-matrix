@@ -144,7 +144,7 @@ const AppHeader = ({ userId }) => {
             className="overflow-hidden rounded-full"
           >
             <img
-              src="https://github.com/shadcn.png"
+              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
               width={36}
               height={36}
               alt="Avatar"

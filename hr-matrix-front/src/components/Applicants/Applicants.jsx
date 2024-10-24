@@ -8,7 +8,13 @@ import ApplicantDetails from "../ApplicantDetails/ApplicantDetails";
 
 const Applicants = () => {
   const { applicants } = useContext(SessionContext);
-
+  const avatars = [
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png",
+    "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+  ]
+  const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
   return (
     <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {!applicants ? (
@@ -19,12 +25,15 @@ const Applicants = () => {
             <ApplicantDetails
               applicantData={currentApplicant}
               trigger={
-                <Card className="p-6 lg:max-w-xl cursor-pointer" key={currentApplicant._id}>
+                <Card
+                  className="p-6 lg:max-w-xl cursor-pointer"
+                  key={currentApplicant._id}
+                >
                   <CardHeader className="flex-row gap-4 items-center pt-0 pl-0">
                     <Avatar className="h-24 w-24">
                       <AvatarImage
                         className="rounded-full"
-                        src="https://github.com/shadcn.png"
+                        src={getRandomElement(avatars)}
                         alt="Applicant Image"
                       />
                       <AvatarFallback>CN</AvatarFallback>
@@ -33,7 +42,10 @@ const Applicants = () => {
                       <CardTitle className="text-xl">
                         {currentApplicant.fullname}
                       </CardTitle>
-                      <Badge variant='outline' className="text-sm rounded-2xl bg-secondary">
+                      <Badge
+                        variant="outline"
+                        className="text-sm rounded-2xl bg-secondary"
+                      >
                         {currentApplicant.status}
                       </Badge>
                     </div>

@@ -37,7 +37,7 @@ export function AuthForm() {
     }
   };
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="w-full h-screen lg:grid lg:grid-cols-2">
       <div className="flex items-center justify-center py-12">
         <form className="mx-auto grid w-[350px] gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2 text-center">
@@ -97,8 +97,8 @@ export function AuthForm() {
         </form>
       </div>
       <div className="hidden bg-muted lg:block">
-        <Image
-          src="/placeholder.svg"
+        <img
+          src="https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Image"
           width="1920"
           height="1080"

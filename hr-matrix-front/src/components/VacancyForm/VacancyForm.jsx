@@ -19,6 +19,7 @@ const today = new Date(timeElapsed);
 export function VacancyForm({
   dialogTrigger,
   vacancy,
+  reloadHandler,
   isUpdate = false,
 }) {
   const { setNeedRefresh, fetchWithToken } = useContext(SessionContext);
@@ -55,6 +56,7 @@ export function VacancyForm({
         await fetchWithToken(`/vacancies/${vacancy._id}`, "PUT", vacancyValues);
       }
       setOpen(false);
+      reloadHandler();
       setNeedRefresh(true);
     } catch (err) {
       console.log("Failed to add a vacancy", err);

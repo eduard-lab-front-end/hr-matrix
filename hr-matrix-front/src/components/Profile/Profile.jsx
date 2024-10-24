@@ -17,7 +17,7 @@ const Profile = ({ user }) => {
             <Avatar className="h-20 w-20">
               <AvatarImage
                 className="rounded-full"
-                src="https://github.com/shadcn.png"
+                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                 alt="Applicant Image"
               />
               <AvatarFallback>CN</AvatarFallback>
