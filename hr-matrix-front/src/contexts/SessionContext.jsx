@@ -10,7 +10,7 @@ const SessionContextProvider = ({ children }) => {
   const [vacancies, setVacancies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState();
-  
+  const [applicants, setApplicants] = useState([]);
   const verifyToken = async (currentToken) => {
     try {
       const response = await fetch(
@@ -53,6 +53,7 @@ const SessionContextProvider = ({ children }) => {
       setIsAuthenticated(true);
       fetchEmployees();
       fetchVacancies();
+      fetchApplicants();
     }
   }, [token]);
 
@@ -97,13 +98,22 @@ const SessionContextProvider = ({ children }) => {
       const data = await fetchWithToken("/vacancies");
       setVacancies(data);
     } catch (error) {
-      console.error("Error getting employees", error);
+      console.error("Error getting vacancies", error);
+    }
+  };
+  const fetchApplicants = async () => {
+    try {
+      const data = await fetchWithToken("/applicants");
+      setApplicants(data);
+    } catch (error) {
+      console.error("Error getting applicants", error);
     }
   };
   useEffect(() => {
     if (needRefresh && !isLoading) {
       fetchEmployees();
       fetchVacancies();
+      fetchApplicants();
       setNeedRefresh(false);
     }
   }, [needRefresh, isLoading]);
@@ -122,6 +132,7 @@ const SessionContextProvider = ({ children }) => {
         user,
         isLoading,
         verifyToken,
+        applicants,
       }}
     >
       {children}

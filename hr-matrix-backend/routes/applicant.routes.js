@@ -27,35 +27,35 @@ router.get("/:applicantId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// router.post("/", isAuthenticated, async (req, res, next) => {
-//   try {
-//     const newApplicant = await Applicant.create({
-//       ...req.body,
-//       createdBy: req.tokenPayload.userId,
-//     });
-//     res.status(201).json(newApplicant);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 router.post("/", isAuthenticated, async (req, res, next) => {
-  const { vacancyId, ...applicantData } = req.body; 
   try {
     const newApplicant = await Applicant.create({
-      ...applicantData,
-      vacancy: vacancyId, 
+      ...req.body,
       createdBy: req.tokenPayload.userId,
     });
-    await Vacancy.findByIdAndUpdate(vacancyId, {
-      $push: { applicants: newApplicant._id }
-    });
-
-    res.status(201).json(newApplicant); 
+    res.status(201).json(newApplicant);
   } catch (error) {
     next(error);
   }
 });
+
+// router.post("/", isAuthenticated, async (req, res, next) => { //need update
+//   const { vacancyId, ...applicantData } = req.body; 
+//   try {
+//     const newApplicant = await Applicant.create({
+//       ...applicantData,
+//       vacancy: vacancyId, 
+//       createdBy: req.tokenPayload.userId,
+//     });
+//     await Vacancy.findByIdAndUpdate(vacancyId, {
+//       $push: { applicants: newApplicant._id }
+//     });
+
+//     res.status(201).json(newApplicant); 
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.put("/:applicantId", isAuthenticated, async (req, res, next) => {
   const { applicantId } = req.params;

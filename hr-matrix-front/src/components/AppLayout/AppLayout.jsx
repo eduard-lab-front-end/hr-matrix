@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { SessionContext } from "@/contexts/SessionContext";
 
@@ -11,20 +11,20 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import EmployeesPage from "@/pages/EmployeesPage";
 import { Vacancies } from "../Vacancies/Vacancies";
 import VacancyDetailsPage from "@/pages/VacancyDetailsPage";
-
-import Spinner from "../ui/spinner";
 import EmployeesDetailsPage from "@/pages/EmployeesDetailsPage";
 import Profile from "../Profile/Profile";
+import NotFoundPage from "@/pages/NotFoundPage";
+import Applicants from "../Applicants/Applicants";
 
 const AppLayout = () => {
   const { user } = useContext(SessionContext)
-
+  const location = useLocation()
   return (
     <>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
-        {user ? <AppSidebarNav userId={user._id}/> : <Spinner />}
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-          <AppHeader />
+        {user && <AppSidebarNav userId={user._id}/>}
+        <div className={`flex flex-col sm:gap-4 ${location.pathname == '/login' || location.pathname == '/signup' ? 'sm:py-0 sm:pl-0' : 'sm:py-4 sm:pl-14'}`}>
+        {user && <AppHeader  userId={user._id}/>} 
           <Routes>
             <Route
               path="/"
@@ -76,7 +76,15 @@ const AppLayout = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="*" element={<h1>Error</h1>} />
+            <Route
+              path="/applicants"
+              element={
+                <PrivateRoute>
+                  <Applicants />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </div>

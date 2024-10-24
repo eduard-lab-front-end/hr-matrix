@@ -1,8 +1,6 @@
 import {
   ChevronLeft,
   ChevronRight,
-  Copy,
-  CreditCard,
   Pencil,
   Trash2,
 } from "lucide-react";
@@ -35,15 +33,17 @@ import { SessionContext } from "@/contexts/SessionContext";
 
 const VacancyDetailsPage = () => {
   const [vacancy, setVacancy] = useState();
+  const [needRefreshVacancy, setNeedRefreshVacancy] = useState(true);
   const { setNeedRefresh, fetchWithToken } = useContext(SessionContext);
   const { vacancyId } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fetchVacancyHandle = async () => {
     try {
       const response = await fetchWithToken(`/vacancies/${vacancyId}`);
       setVacancy(response);
-      setNeedRefresh(true);
+      setNeedRefresh(false)
+      setNeedRefreshVacancy(false);
     } catch (error) {
       console.log("Can't fetch vacancy", error);
     }
@@ -52,19 +52,24 @@ const VacancyDetailsPage = () => {
     try {
       await fetchWithToken(`/vacancies/${vacancyId}`, "DELETE");
       setNeedRefresh(true);
-      navigate('/vacancies')
+      navigate("/vacancies");
     } catch (error) {
       console.log("Can't remove an employee", error);
     }
   };
   useEffect(() => {
-    fetchVacancyHandle();
+    fetchVacancyHandle(); 
   }, []);
+  useEffect(() => {
+    if(needRefreshVacancy) {
+      fetchVacancyHandle();
+    }
+  }, [needRefreshVacancy]);
 
   return (
     <>
       {vacancy && (
-        <div>
+        <div className="p-6">
           <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
             <CardHeader className="flex flex-row items-start bg-muted/50">
               <div className="grid gap-0.5">
@@ -73,16 +78,10 @@ const VacancyDetailsPage = () => {
                   <span className="text-muted-foreground">
                     {vacancy.positionTitle}
                   </span>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                  >
-                    <Copy className="h-3 w-3" />
-                    <span className="sr-only">Copy Order ID</span>
-                  </Button>
                 </CardTitle>
-                <CardDescription>Date: {vacancy.publication}</CardDescription>
+                <CardDescription>
+                  Publication: {vacancy.publication}
+                </CardDescription>
               </div>
               <div className="ml-auto flex items-center gap-1">
                 <TooltipProvider>
@@ -127,93 +126,82 @@ const VacancyDetailsPage = () => {
               </div>
             </CardHeader>
             <CardContent className="p-6 text-sm">
-              <div className="grid gap-3">
-                <div className="font-semibold">Order Details</div>
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Glimmer Lamps x <span>2</span>
-                    </span>
-                    <span>$250.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Aqua Filters x <span>1</span>
-                    </span>
-                    <span>$49.00</span>
-                  </li>
-                </ul>
-                <Separator className="my-2" />
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span>$299.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>$5.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Tax</span>
-                    <span>$25.00</span>
-                  </li>
-                  <li className="flex items-center justify-between font-semibold">
-                    <span className="text-muted-foreground">Total</span>
-                    <span>$329.00</span>
-                  </li>
-                </ul>
-              </div>
-              <Separator className="my-4" />
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-3">
-                  <div className="font-semibold">Shipping Information</div>
+                  <div className="font-semibold">Location Information</div>
                   <address className="grid gap-0.5 not-italic text-muted-foreground">
-                    <span>Liam Johnson</span>
+                    <span>{vacancy.location}</span>
                     <span>1234 Main St.</span>
                     <span>Anytown, CA 12345</span>
                   </address>
                 </div>
-                <div className="grid auto-rows-max gap-3">
-                  <div className="font-semibold">Billing Information</div>
+                <div className="grid auto-rows-max gap-3 text-right">
+                  <div className="font-semibold">Company Information</div>
                   <div className="text-muted-foreground">
-                    Same as shipping address
+                    Same as location address
                   </div>
                 </div>
               </div>
               <Separator className="my-4" />
               <div className="grid gap-3">
-                <div className="font-semibold">Customer Information</div>
-                <dl className="grid gap-3">
+                <div className="font-semibold">Responsible recruiter</div>
+                <div className="grid gap-3">
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Customer</dt>
-                    <dd>Liam Johnson</dd>
+                    <div className="text-muted-foreground">Name</div>
+                    <dd>John Doe</dd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Email</dt>
+                    <div className="text-muted-foreground">Email</div>
                     <dd>
-                      <a href="mailto:">liam@acme.com</a>
+                      <a href="mailto:">john.doe@example.com</a>
                     </dd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Phone</dt>
+                    <div className="text-muted-foreground">Phone</div>
                     <dd>
                       <a href="tel:">+1 234 567 890</a>
                     </dd>
                   </div>
-                </dl>
+                </div>
               </div>
               <Separator className="my-4" />
               <div className="grid gap-3">
-                <div className="font-semibold">Payment Information</div>
-                <dl className="grid gap-3">
+                <div className="font-semibold">Position Information</div>
+                <div className="grid gap-3">
                   <div className="flex items-center justify-between">
-                    <dt className="flex items-center gap-1 text-muted-foreground">
-                      <CreditCard className="h-4 w-4" />
-                      Visa
-                    </dt>
-                    <dd>**** **** **** 4532</dd>
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      Status
+                    </div>
+                    <dd>Open</dd>
                   </div>
-                </dl>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      Id
+                    </div>
+                    <dd>#515498593589535621</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="text-muted-foreground">
+                      Skills
+                    </div>
+                    <div className="flex gap-1">
+                      <dd>JavaScript</dd>
+                      <dd>React</dd>
+                      <dd>Node.js</dd>
+                      <dd>MongoDb</dd>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="text-muted-foreground">
+                      Responsibilities
+                    </div>
+                    <div className="flex flex-col gap-1 text-right">
+                      <dd>Developed web applications</dd>
+                      <dd>Led a small team of developers</dd>
+                      <dd>Integrated third-party APIs</dd>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
             <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">

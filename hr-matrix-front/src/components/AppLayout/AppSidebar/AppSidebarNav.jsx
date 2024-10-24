@@ -3,9 +3,9 @@ import {
   Users,
   Package2,
   Home,
-  LineChart,
   Settings,
   BookUser,
+  Star,
 } from "lucide-react";
 
 import {
@@ -51,7 +51,7 @@ const AppSidebarNav = ({userId}) => {
             <TooltipTrigger asChild>
               <NavLink
                 to="/employees"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Users className="h-5 w-5" />
                 <span className="sr-only">Employees</span>
@@ -78,6 +78,20 @@ const AppSidebarNav = ({userId}) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
+                to="/applicants"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              >
+                <Star />
+                <span className="sr-only">Applicants</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side="right">Applicants</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
                 to={`/profile/${userId}`}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
@@ -86,20 +100,6 @@ const AppSidebarNav = ({userId}) => {
               </NavLink>
             </TooltipTrigger>
             <TooltipContent side="right">Profile</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink
-                to="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LineChart className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </nav>

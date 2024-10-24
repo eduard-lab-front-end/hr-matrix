@@ -2,16 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../../ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
 import {
+  BookUser,
   Home,
-  Image,
-  LineChart,
   Moon,
-  Package,
   Package2,
   PanelLeft,
   Search,
-  ShoppingCart,
+  Star,
   Sun,
+  Users,
   Users2,
 } from "lucide-react";
 import {
@@ -35,14 +34,16 @@ import { SessionContext } from "@/contexts/SessionContext";
 import { useContext } from "react";
 import { useTheme } from "@/components/ThemeProvider/ThemeProvider";
 
-const AppHeader = () => {
+const AppHeader = ({ userId }) => {
   const { logout } = useContext(SessionContext);
   const { setTheme, theme } = useTheme();
   const location = useLocation();
   return (
     <header
       className={`${
-        location.pathname == "/login" || location.pathname == "/signup" ? "hidden" : "sticky"
+        location.pathname == "/login" || location.pathname == "/signup"
+          ? "hidden"
+          : "sticky"
       } w-full top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6`}
     >
       <Sheet>
@@ -72,29 +73,29 @@ const AppHeader = () => {
               to="/employees"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <Users className="h-5 w-5" />
               Employees
             </NavLink>
             <NavLink
-              to="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
+              to="/vacancies"
+              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
-              <Package className="h-5 w-5" />
-              Products
+              <BookUser className="h-5 w-5" />
+              Vacancies
             </NavLink>
             <NavLink
-              to="#"
+              to="/applicants"
+              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            >
+              <Star />
+              Applicants
+            </NavLink>
+            <NavLink
+              to={`/profile/${userId}`}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Users2 className="h-5 w-5" />
-              Customers
-            </NavLink>
-            <NavLink
-              to="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
-              Settings
+              Profile
             </NavLink>
           </nav>
         </SheetContent>
@@ -142,8 +143,8 @@ const AppHeader = () => {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              src="/placeholder-user.jpg"
+            <img
+              src="https://github.com/shadcn.png"
               width={36}
               height={36}
               alt="Avatar"

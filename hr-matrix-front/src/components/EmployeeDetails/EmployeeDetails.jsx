@@ -73,7 +73,7 @@ export const EmployeeDetails = () => {
               </p>
               <Separator />
               <p className="flex gap-2 items-center">
-                <Mail size={20} /> {employee.email}
+                <Mail size={20} /> second@email.com
               </p>
             </CardFooter>
           </Card>

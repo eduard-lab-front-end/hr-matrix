@@ -41,7 +41,6 @@ export function VacancyForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(vacancyValues)
     try {
       if (!isUpdate) {
         await fetchWithToken("/vacancies", "POST", vacancyValues);
